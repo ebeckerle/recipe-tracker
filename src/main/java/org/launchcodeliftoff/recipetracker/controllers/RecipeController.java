@@ -24,6 +24,7 @@ public class RecipeController {
 
     @GetMapping("/add")
     public String displayAddRecipe(Model model){
+        model.addAttribute("title", "Add A Recipe");
         model.addAttribute(new Recipe());
         return "add-recipe";
     }
@@ -35,11 +36,13 @@ public class RecipeController {
         }
         recipeRepository.save(newRecipe);
         model.addAttribute("recipe", recipeRepository.findById(newRecipe.getId()).get());
+        model.addAttribute("title", recipeRepository.findById(newRecipe.getId()).get().getName());
         return "view-recipe";
     }
 
     @GetMapping("/{recipeId}")
     public String displayViewRecipe(Model model, @PathVariable Integer recipeId){
+        model.addAttribute("title", recipeRepository.findById(recipeId).get().getName());
         model.addAttribute("recipe", recipeRepository.findById(recipeId).get());
         return "view-recipe";
     }
