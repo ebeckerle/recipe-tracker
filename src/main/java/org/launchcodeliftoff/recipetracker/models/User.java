@@ -1,6 +1,9 @@
 package org.launchcodeliftoff.recipetracker.models;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +14,13 @@ public class User {
     @GeneratedValue
     private Integer id;
 
+    @NotNull
     private String username;
 
+    @NotNull
     private String pwHash;
-//    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @OneToMany(mappedBy = "recipeAuthor")
     private List<Recipe> myRecipes = new ArrayList<>();
@@ -30,9 +36,9 @@ public class User {
 
     public User(){}
 
-    public User(String username, String pwHash) {
+    public User(String username, String password) {
         this.username = username;
-        this.pwHash = pwHash;
+        this.pwHash = encoder.encode(password);
     }
 
     public Integer getId() {
@@ -81,5 +87,9 @@ public class User {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public boolean isMatchingPassword(String password) {
+        return encoder.matches(password, pwHash);
     }
 }
