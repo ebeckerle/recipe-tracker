@@ -12,10 +12,10 @@
         <p th:text="${'by '+ recipe.recipeAuthor}" th:href="@{'/list-recipes'+ ${recipe.recipeAuthor}}"></p>
 
         <p style="color:dark-grey;">Ingredient List</p>
-        <p th:text="${recipe.ingredientList}"></p>
+        <p style="white-space: pre-line" th:text="${recipe.ingredientList}"></p>
 
         <h6 style="color:dark-grey;">Preparation</h6>
-        <p th:text="${recipe.recipeInstruction}"></p>
+        <p style="white-space: pre-line" th:text="${recipe.recipeInstruction}"></p>
     </div>
 </div>
 
