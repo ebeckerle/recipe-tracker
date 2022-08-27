@@ -51,7 +51,6 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
         if (user != null) {
             return true;
         }
-        System.out.println("I am in the prehandle");
 
         // The user is NOT logged in
         response.sendRedirect("/login");
