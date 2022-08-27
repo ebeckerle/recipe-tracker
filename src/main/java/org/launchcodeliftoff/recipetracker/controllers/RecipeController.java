@@ -2,6 +2,7 @@ package org.launchcodeliftoff.recipetracker.controllers;
 
 import org.launchcodeliftoff.recipetracker.data.CookbookRepository;
 import org.launchcodeliftoff.recipetracker.data.RecipeRepository;
+import org.launchcodeliftoff.recipetracker.models.Comment;
 import org.launchcodeliftoff.recipetracker.models.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,7 @@ public class RecipeController {
     public String displayViewRecipe(Model model, @PathVariable Integer recipeId){
         model.addAttribute("title", recipeRepository.findById(recipeId).get().getName());
         model.addAttribute("recipe", recipeRepository.findById(recipeId).get());
+        model.addAttribute(new Comment());
         return "view-recipe";
     }
 
