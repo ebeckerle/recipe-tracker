@@ -17,6 +17,29 @@
         <h6 style="color:dark-grey;">Preparation</h6>
         <p style="white-space: pre-line" th:text="${recipe.recipeInstruction}"></p>
     </div>
+
+    <div>
+        <h2>Comments</h2>
+        <div>
+            <div th:each="comment : ${comments}"><p th:text="${comment}"></p></div>
+        </div>
+        <form method="post">
+            <div class="form-group">
+                <label>Add a Comment:
+                    <textarea th:field="${comment.commentBody}" class="form-control" rows="3" cols="50"></textarea>
+                </label>
+            </div>
+            <p class="error" th:errors="${comment.commentBody}"></p>
+
+            <div class="stars">
+                <a>⭐</a>
+                <a>⭐</a>
+                <a>⭐</a>
+                <a>⭐</a>
+                <a>⭐</a>
+            </div>
+        </form>
+    </div>
 </div>
 
 </body>

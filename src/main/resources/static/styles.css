@@ -4,3 +4,20 @@
     margin-left: 3%;
     margin-right: 1%
 }
+
+.stars a {
+    opacity: 50%;
+    cursor: pointer;
+}
+
+.stars:hover a {
+    opacity: 100%;
+}
+
+.stars a:hover {
+    opacity: 100%;
+}
+
+.stars a:hover ~ a {
+    opacity: 50%;
+}
