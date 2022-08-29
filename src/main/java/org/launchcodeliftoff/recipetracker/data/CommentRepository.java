@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface CommentRepository extends CrudRepository<Comment, Integer> {
 
-//    Optional<Comment> findByRecipe(Recipe recipe);
+    Iterable<Comment> findByRecipeId(Integer recipeId);
 }
