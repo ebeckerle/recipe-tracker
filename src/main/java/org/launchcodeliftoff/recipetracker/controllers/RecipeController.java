@@ -42,15 +42,15 @@ public class RecipeController {
 
     @PostMapping("/add")
     public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe, Errors errors,
-//                                   HttpServletRequest request,
+                                   HttpServletRequest request,
                                    Model model){
         if (errors.hasErrors()){
             return "add-recipe";
         }
 
-//        HttpSession session = request.getSession();
-//        Integer userId = (Integer) session.getAttribute("user");
-//        newRecipe.setRecipeAuthor(userRepository.findById(userId));
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("user");
+        newRecipe.setRecipeAuthor(userRepository.findById(userId).get());
 
         recipeRepository.save(newRecipe);
         model.addAttribute("recipe", recipeRepository.findById(newRecipe.getId()).get());
@@ -71,13 +71,13 @@ public class RecipeController {
 
     @PostMapping("/{recipeId}")
     public String processAddCommentForm(Comment newComment,
-//                                      HttpServletRequest request,
+                                      HttpServletRequest request,
                                         Model model, @PathVariable Integer recipeId
                                         ){
 
-//        HttpSession session = request.getSession();
-//        Integer userId = (Integer) session.getAttribute("user");
-//        newComment.setUser(userRepository.findById(userId));
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("user");
+        newComment.setUser(userRepository.findById(userId).get());
 
         newComment.setRecipe(recipeRepository.findById(recipeId).get());
         commentRepository.save(newComment);
