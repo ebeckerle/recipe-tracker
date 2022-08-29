@@ -21,7 +21,7 @@
     <div>
         <h2>Comments</h2>
         <div>
-            <div th:each="comment : ${comments}"><p th:text="${comment}"></p></div>
+            <div th:each="comment : ${comments}"><p th:text="${comment.commentBody}"></p></div>
         </div>
         <form method="post">
             <div class="form-group">
@@ -37,6 +37,10 @@
                 <a>⭐</a>
                 <a>⭐</a>
                 <a>⭐</a>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Add Comment" class="btn btn-success">
             </div>
         </form>
     </div>

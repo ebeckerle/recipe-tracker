@@ -1,9 +1,7 @@
 package org.launchcodeliftoff.recipetracker.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +12,14 @@ public class Cookbook {
     @GeneratedValue
     private Integer id;
 
+    @NotNull(message = "Please name your Recipe!")
     private String name;
 
     @ManyToMany
     private List<Recipe> recipes = new ArrayList<>();
+
+    @ManyToOne
+    private User user;
 
     public Cookbook() {
     }
@@ -46,5 +48,13 @@ public class Cookbook {
 
     public void setRecipes(List<Recipe> recipes) {
         this.recipes = recipes;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
