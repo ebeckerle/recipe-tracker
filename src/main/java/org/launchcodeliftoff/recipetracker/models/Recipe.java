@@ -1,7 +1,9 @@
 package org.launchcodeliftoff.recipetracker.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +21,12 @@ public class Recipe {
 
     ///TODO: further research on a photo/image field : private Img photo;
 
-    @NotNull
+    @NotNull(message = "Please include Ingredients")
+    @Size(max=500, message = "The ingredient list is too long, the limit is 500 characters")
     private String ingredientList;
 
     @NotNull
+    @Size(max=2000, message = "The recipe instruction is too long, the limit is 2000 characters")
     private String recipeInstruction;
 
     @OneToMany
@@ -36,7 +40,7 @@ public class Recipe {
 
     public Recipe(){}
 
-    public Recipe(String name, String description, String ingredientList, String recipeInstruction, User recipeAuthor) {
+    public Recipe(String name, String description, @Size(max=500) String ingredientList, @Size(max=2000) String recipeInstruction, User recipeAuthor) {
         this.name = name;
         this.description = description;
         this.ingredientList = ingredientList;

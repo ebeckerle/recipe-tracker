@@ -11,4 +11,6 @@ public interface RecipeRepository extends CrudRepository<Recipe, Integer> {
 //
 //    //    Iterable<Recipe> findByCookbookId(Integer cookbookId);
 //    Iterable<Recipe> findByCookbooks(Cookbook cookbook);
+
+        Iterable<Recipe> findByRecipeAuthorId(Integer recipeAuthorId);
 }

@@ -22,6 +22,10 @@ public class User {
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+    private String email;
+    private String firstName;
+    private String lastName;
+
     @OneToMany(mappedBy = "recipeAuthor")
     private List<Recipe> myRecipes = new ArrayList<>();
 
@@ -41,6 +45,14 @@ public class User {
         this.pwHash = encoder.encode(password);
     }
 
+    public User(String username, String password, String email, String firstName, String lastName) {
+        this.username = username;
+        this.pwHash = encoder.encode(password);
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -55,6 +67,30 @@ public class User {
 
     public String getPwHash() {
         return pwHash;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public List<Recipe> getMyRecipes() {

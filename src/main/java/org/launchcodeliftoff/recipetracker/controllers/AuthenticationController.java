@@ -1,5 +1,6 @@
 package org.launchcodeliftoff.recipetracker.controllers;
 
+import org.launchcodeliftoff.recipetracker.data.RecipeRepository;
 import org.launchcodeliftoff.recipetracker.data.UserRepository;
 import org.launchcodeliftoff.recipetracker.models.User;
 import org.launchcodeliftoff.recipetracker.models.dto.LoginFormDTO;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,9 @@ public class AuthenticationController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    RecipeRepository recipeRepository;
 
     private static final String userSessionKey = "user";
 
@@ -79,7 +84,7 @@ public class AuthenticationController {
             return "register";
         }
 
-        User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getPassword());
+        User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getPassword(), registerFormDTO.getEmail(), registerFormDTO.getFirstName(), registerFormDTO.getLastName());
         userRepository.save(newUser);
         setUserInSession(request.getSession(), newUser);
 
@@ -91,6 +96,7 @@ public class AuthenticationController {
     public String displayLoginForm(Model model) {
         model.addAttribute(new LoginFormDTO());
         model.addAttribute("title", "Log In");
+        model.addAttribute("recipes", recipeRepository.findAll());
         return "login";
     }
 
@@ -101,6 +107,7 @@ public class AuthenticationController {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Log In");
+            System.out.println("we are in the if errors has errors");
             return "login";
         }
 
@@ -109,6 +116,7 @@ public class AuthenticationController {
         if (theUser == null) {
             errors.rejectValue("username", "user.invalid", "The given username does not exist");
             model.addAttribute("title", "Log In");
+            System.out.println("we are in the if user is null");
             return "login";
         }
 
@@ -122,7 +130,7 @@ public class AuthenticationController {
 
         setUserInSession(request.getSession(), theUser);
 
-        return "redirect:";
+        return "redirect:/home";
     }
 
     @GetMapping("/logout")

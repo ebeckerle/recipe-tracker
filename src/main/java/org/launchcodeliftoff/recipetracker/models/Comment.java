@@ -1,6 +1,7 @@
 package org.launchcodeliftoff.recipetracker.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Comment {
@@ -8,6 +9,7 @@ public class Comment {
     @GeneratedValue
     private Integer id;
 
+    @Size(max = 500, message = "Comment is too long.")
     private String commentBody;
 
     private Integer rating;

@@ -12,7 +12,7 @@ public class Cookbook {
     @GeneratedValue
     private Integer id;
 
-    @NotNull(message = "Please name your Recipe!")
+    @NotNull(message = "Please name your Cookbook!")
     private String name;
 
     @ManyToMany

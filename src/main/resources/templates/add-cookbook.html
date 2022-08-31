@@ -13,7 +13,17 @@
             <p class="error" th:errors="${cookbook.name}"></p>
         </div>
         <div class="form-group">
-            <label>My Recipes
+            <label>Recipes:
+                <select th:field="${cookbook.recipes}">
+                    <option th:each="recipe : ${recipes}"
+                            th:value="${recipe.id}"
+                            th:text="${recipe.name}"
+                    ></option>
+                </select>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>Recipes:
                 <select th:field="${cookbook.recipes}">
                     <option th:each="recipe : ${recipes}"
                             th:value="${recipe.id}"

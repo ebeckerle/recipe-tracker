@@ -9,7 +9,7 @@
     <div style="margin:40px; padding:10px; border: 2px solid #FFA500;">
         <h1 th:text="${recipe.name}"></h1>
         <h2 th:text="${recipe.description}"></h2>
-        <p th:text="${'by '+ recipe.recipeAuthor}" th:href="@{'/list-recipes'+ ${recipe.recipeAuthor}}"></p>
+        <p th:text="${'by '+ recipeAuthor}" th:href="@{'/list-recipes'+ ${recipe.recipeAuthor}}"></p>
 
         <p style="color:dark-grey;">Ingredient List</p>
         <p style="white-space: pre-line" th:text="${recipe.ingredientList}"></p>
@@ -37,6 +37,15 @@
                 <a>⭐</a>
                 <a>⭐</a>
                 <a>⭐</a>
+            </div>
+
+            <div class="form-group">
+                <label>Rating:
+                    <select th:field="${comment.rating}">
+                        <option th:each="aRating : ${ratings}" th:text="${aRating}" th:value="${aRating}"></option>
+                    </select>
+                </label>
+
             </div>
 
             <div class="form-group">

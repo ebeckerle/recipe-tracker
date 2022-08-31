@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 
 @Controller
 //TODO: requestmapping will probably need to change before / after merged with main
@@ -55,15 +56,33 @@ public class RecipeController {
         recipeRepository.save(newRecipe);
         model.addAttribute("recipe", recipeRepository.findById(newRecipe.getId()).get());
         model.addAttribute("title", recipeRepository.findById(newRecipe.getId()).get().getName());
+        model.addAttribute("recipeAuthor", newRecipe.getRecipeAuthor().getUsername());
         model.addAttribute(new Comment());
+
+        ArrayList<Integer> ratings = new ArrayList<>();
+        ratings.add(1);
+        ratings.add(2);
+        ratings.add(3);
+        ratings.add(4);
+        ratings.add(5);
+        model.addAttribute("ratings", ratings);
         return "view-recipe";
     }
 
     @GetMapping("/{recipeId}")
     public String displayViewRecipe(Model model, @PathVariable Integer recipeId){
+        Recipe recipe = recipeRepository.findById(recipeId).get();
         model.addAttribute("title", recipeRepository.findById(recipeId).get().getName());
-        model.addAttribute("recipe", recipeRepository.findById(recipeId).get());
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("recipeAuthor", recipe.getRecipeAuthor().getUsername());
         model.addAttribute("comments", commentRepository.findByRecipeId(recipeId));
+        ArrayList<Integer> ratings = new ArrayList<>();
+        ratings.add(1);
+        ratings.add(2);
+        ratings.add(3);
+        ratings.add(4);
+        ratings.add(5);
+        model.addAttribute("ratings", ratings);
 
         model.addAttribute(new Comment());
         return "view-recipe";
@@ -82,10 +101,19 @@ public class RecipeController {
         newComment.setRecipe(recipeRepository.findById(recipeId).get());
         commentRepository.save(newComment);
 
+        Recipe recipe = recipeRepository.findById(recipeId).get();
         model.addAttribute("title", recipeRepository.findById(recipeId).get().getName());
-        model.addAttribute("recipe", recipeRepository.findById(recipeId).get());
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("recipeAuthor", recipe.getRecipeAuthor().getUsername());
         model.addAttribute("comments", commentRepository.findByRecipeId(recipeId));
         model.addAttribute(new Comment());
+        ArrayList<Integer> ratings = new ArrayList<>();
+        ratings.add(1);
+        ratings.add(2);
+        ratings.add(3);
+        ratings.add(4);
+        ratings.add(5);
+        model.addAttribute("ratings", ratings);
 
         return "view-recipe";
     }

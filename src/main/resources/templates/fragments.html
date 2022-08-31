@@ -13,7 +13,25 @@
         <div style="color:black; padding:20px;">
             <a th:href="@{/}" style="color:black; font-size:large;">Recipe App - placeholder header</a>
         </div>
+        <div style="color:black; padding:20px;"><a th:href="@{/home}" style="color:black; font-size:large;">User Home</a></div>
+        <div style="color:black; padding:20px;"><a th:href="@{/logout}" style="color:black; font-size:large;">Log Out</a></div>
     </div>
 </div>
+
+
+<div th:fragment="view-recipes">
+    <div th:each="recipe : ${recipes}">
+        <a th:href="@{'/recipe/'+${recipe.id}}"><h3 th:text="${recipe.name}"></h3></a>
+        <h4 th:text="${recipe.description}"></h4>
+    </div>
+</div>
+
+<div th:fragment="view-savedRecipes">
+    <div th:each="recipe : ${savedRecipes}">
+        <a th:href="@{'/recipe/'+${recipe.id}}"><h3 th:text="${recipe.name}"></h3></a>
+        <h4 th:text="${recipe.description}"></h4>
+    </div>
+</div>
+
 </body>
 </html>
