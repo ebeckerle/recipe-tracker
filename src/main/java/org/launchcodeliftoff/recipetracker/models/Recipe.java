@@ -17,16 +17,17 @@ public class Recipe {
     @NotNull(message = "Please name your Recipe!")
     private String name;
 
+    @Size(max=600, message = "The ingredient list is too long, the limit is 600 characters")
     private String description;
 
     ///TODO: further research on a photo/image field : private Img photo;
 
     @NotNull(message = "Please include Ingredients")
-    @Size(max=500, message = "The ingredient list is too long, the limit is 500 characters")
+    @Size(max=1000, message = "The ingredient list is too long, the limit is 1000 characters")
     private String ingredientList;
 
     @NotNull
-    @Size(max=2000, message = "The recipe instruction is too long, the limit is 2000 characters")
+    @Size(max=3000, message = "The recipe instruction is too long, the limit is 3000 characters")
     private String recipeInstruction;
 
     @OneToMany
@@ -38,9 +39,11 @@ public class Recipe {
     @ManyToMany(mappedBy = "recipes")
     private List<Cookbook> cookbooks = new ArrayList<>();
 
+    private Integer averageRating = 0;
+
     public Recipe(){}
 
-    public Recipe(String name, String description, @Size(max=500) String ingredientList, @Size(max=2000) String recipeInstruction, User recipeAuthor) {
+    public Recipe(String name, @Size(max=600) String description, @Size(max=1000) String ingredientList, @Size(max=3000) String recipeInstruction, User recipeAuthor) {
         this.name = name;
         this.description = description;
         this.ingredientList = ingredientList;
@@ -92,6 +95,11 @@ public class Recipe {
         this.comments = comments;
     }
 
+    public void setComment(Comment comment) {
+
+        this.comments.add(comment);
+    }
+
     public User getRecipeAuthor() {
         return recipeAuthor;
     }
@@ -106,6 +114,30 @@ public class Recipe {
 
     public void setCookbooks(List<Cookbook> cookbooks) {
         this.cookbooks = cookbooks;
+    }
+
+    public Integer getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Integer averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public void calculateAverageRating(){
+        if(this.comments.size()>=1){
+            Integer averageRating;
+            Integer totalOfRatings = 0;
+            Integer divisor = this.comments.size();
+            for (Comment comment:
+                    this.comments) {
+                totalOfRatings += comment.getRating();
+            }
+            averageRating = totalOfRatings / divisor;
+            this.averageRating = averageRating;
+        }else{
+            this.averageRating = 0;
+        }
     }
 }
 

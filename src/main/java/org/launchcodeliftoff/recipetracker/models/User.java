@@ -109,6 +109,10 @@ public class User {
         this.savedRecipes = savedRecipes;
     }
 
+    public void addToSavedRecipes(Recipe recipe){
+        this.savedRecipes.add(recipe);
+    }
+
     public List<Cookbook> getCookbooks() {
         return cookbooks;
     }

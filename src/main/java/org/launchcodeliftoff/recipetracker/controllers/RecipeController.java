@@ -6,6 +6,7 @@ import org.launchcodeliftoff.recipetracker.data.RecipeRepository;
 import org.launchcodeliftoff.recipetracker.data.UserRepository;
 import org.launchcodeliftoff.recipetracker.models.Comment;
 import org.launchcodeliftoff.recipetracker.models.Recipe;
+import org.launchcodeliftoff.recipetracker.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,6 +71,7 @@ public class RecipeController {
     }
 
     @GetMapping("/{recipeId}")
+//    @RequestMapping(value="/{recipeId}", method = RequestMethod.GET)
     public String displayViewRecipe(Model model, @PathVariable Integer recipeId){
         Recipe recipe = recipeRepository.findById(recipeId).get();
         model.addAttribute("title", recipeRepository.findById(recipeId).get().getName());
@@ -89,19 +91,28 @@ public class RecipeController {
     }
 
     @PostMapping("/{recipeId}")
+//    @RequestMapping(value="/{recipeId}", method = RequestMethod.POST, params = "action=postComment")
     public String processAddCommentForm(Comment newComment,
                                       HttpServletRequest request,
                                         Model model, @PathVariable Integer recipeId
                                         ){
-
+        // finding logged in user by getting session
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("user");
-        newComment.setUser(userRepository.findById(userId).get());
 
+        //attaching the user who made the comment to the comment (as the comment author)
+        newComment.setUser(userRepository.findById(userId).get());
+        //attaching the recipe to the comment
         newComment.setRecipe(recipeRepository.findById(recipeId).get());
         commentRepository.save(newComment);
 
+
+        //update the recipe's average rating since it has a new comment
         Recipe recipe = recipeRepository.findById(recipeId).get();
+        recipe.setComment(newComment);
+        recipe.calculateAverageRating();
+        recipeRepository.save(recipe);
+
         model.addAttribute("title", recipeRepository.findById(recipeId).get().getName());
         model.addAttribute("recipe", recipe);
         model.addAttribute("recipeAuthor", recipe.getRecipeAuthor().getUsername());
@@ -117,5 +128,21 @@ public class RecipeController {
 
         return "view-recipe";
     }
+
+////    @RequestMapping(value="/saveRecipe", method = RequestMethod.POST, params = "action=saveRecipe")
+//    @PostMapping(value="/{recipeId}", params="saveRecipe")
+//    public String processSaveRecipe(@RequestParam Integer recipesId, HttpServletRequest request,
+//                                        Model model, @PathVariable Integer recipeId){
+//
+//        HttpSession session = request.getSession();
+//        Integer userId = (Integer) session.getAttribute("user");
+//        User user = userRepository.findById(userId).get();
+//        Recipe recipe = recipeRepository.findById(recipesId).get();
+//        user.addToSavedRecipes(recipe);
+//
+//        userRepository.save(user);
+//
+//        return "home";
+//    }
 
 }

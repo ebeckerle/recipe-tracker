@@ -1,7 +1,9 @@
 package org.launchcodeliftoff.recipetracker.controllers;
 
+import org.launchcodeliftoff.recipetracker.data.CommentRepository;
 import org.launchcodeliftoff.recipetracker.data.RecipeRepository;
 import org.launchcodeliftoff.recipetracker.data.UserRepository;
+import org.launchcodeliftoff.recipetracker.models.Comment;
 import org.launchcodeliftoff.recipetracker.models.User;
 import org.launchcodeliftoff.recipetracker.models.dto.LoginFormDTO;
 import org.launchcodeliftoff.recipetracker.models.dto.RegisterFormDTO;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -27,6 +30,9 @@ public class AuthenticationController {
 
     @Autowired
     RecipeRepository recipeRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
 
     private static final String userSessionKey = "user";
 
@@ -97,6 +103,7 @@ public class AuthenticationController {
         model.addAttribute(new LoginFormDTO());
         model.addAttribute("title", "Log In");
         model.addAttribute("recipes", recipeRepository.findAll());
+        //Collections.sort(recipes.getRating())
         return "login";
     }
 
