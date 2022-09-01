@@ -51,6 +51,13 @@ public class Recipe {
         this.recipeAuthor = recipeAuthor;
     }
 
+    public Recipe(String aName, String aDescription, String anIngredientList, String aRecipeInstruction) {
+        this.name = aName;
+        this.description = aDescription;
+        this.ingredientList = anIngredientList;
+        this.recipeInstruction = aRecipeInstruction;
+    }
+
     public Integer getId() {
         return id;
     }

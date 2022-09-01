@@ -22,7 +22,7 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
     AuthenticationController authenticationController;
 
 
-    private static final List<String> whitelist = Arrays.asList("/login", "/register", "/logout", "/css");
+    private static final List<String> whitelist = Arrays.asList("/login", "/register", "/logout", "/css", "/seed-data");
 
     private static boolean isWhitelisted(String path) {
         for (String pathRoot : whitelist) {
