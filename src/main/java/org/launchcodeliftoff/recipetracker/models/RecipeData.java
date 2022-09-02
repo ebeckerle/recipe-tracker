@@ -80,8 +80,8 @@ public class RecipeData {
 //                Integer newRecipeAuthorId = (Integer) findExistingObject(allRecipeAuthors, aRecipeAuthorId);
 
                 String newDescription = (String) findExistingObject(allDescriptions, aDescription);
-                PositionType newPosition = (PositionType) findExistingObject(allPositionTypes, aPosition);
-                CoreCompetency newSkill = (CoreCompetency) findExistingObject(allCoreCompetency, aSkill);
+//                PositionType newPosition = (PositionType) findExistingObject(allPositionTypes, aPosition);
+//                CoreCompetency newSkill = (CoreCompetency) findExistingObject(allCoreCompetency, aSkill);
 
 //                if (newRecipeAuthorId == null){
 //                    newRecipeAuthorId = new Integer(aRecipeAuthorId);
