@@ -64,7 +64,7 @@ public class CookbookController {
 
     @GetMapping("/view/{cookbookId}")
     public String displayViewCookbook(@PathVariable Integer cookbookId, Model model){
-        model.addAttribute("cookbook", cookbookRepository.findById(cookbookId));
+        model.addAttribute("cookbook", cookbookRepository.findById(cookbookId).get());
         return "view-cookbook";
     }
 }

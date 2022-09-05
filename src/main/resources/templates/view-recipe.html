@@ -9,7 +9,7 @@
     <div style="margin:40px; padding:10px; border: 2px solid #FFA500;">
         <h1 th:text="${recipe.name}"></h1>
         <h2 th:text="${recipe.description}"></h2>
-        <p th:text="${'by '+ recipeAuthor}" th:href="@{'/list-recipes'+ ${recipe.recipeAuthor}}"></p>
+        <p>by </p><a th:text="${'by '+ recipeAuthor}" th:href="@{'/search/list-recipes/'+ ${recipe.recipeAuthor.getId()}}"></a>
 
         <p style="color:dark-grey;">Ingredient List</p>
         <p style="white-space: pre-line" th:text="${recipe.ingredientList}"></p>

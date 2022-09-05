@@ -6,7 +6,7 @@ import org.launchcodeliftoff.recipetracker.data.RecipeRepository;
 import org.launchcodeliftoff.recipetracker.data.UserRepository;
 import org.launchcodeliftoff.recipetracker.models.Comment;
 import org.launchcodeliftoff.recipetracker.models.Recipe;
-import org.launchcodeliftoff.recipetracker.models.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -144,5 +144,7 @@ public class RecipeController {
 //
 //        return "home";
 //    }
+
+
 
 }
