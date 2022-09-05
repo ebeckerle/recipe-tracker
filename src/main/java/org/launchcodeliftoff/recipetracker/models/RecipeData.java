@@ -25,7 +25,8 @@ public class RecipeData {
     private static ArrayList<String> allDescriptions;
     private static ArrayList<String> allIngredientLists;
     private static ArrayList<String> allRecipeInstructions;
-    private static ArrayList<User> allRecipeAuthors;
+    private static ArrayList<Integer> allRecipeAuthors;
+    private static ArrayList<Integer> allAverageRatings;
 
 
     public static ArrayList<Recipe> findAll() {
@@ -75,33 +76,46 @@ public class RecipeData {
                 String aName = record.get(3);
                 String aRecipeInstruction = record.get(4);
                 String aRecipeAuthorId = record.get(5);
-                String anAverageRating = record.get(6);
+                Integer anAverageRating = Integer.valueOf(record.get(6));
 
-//                Integer newRecipeAuthorId = (Integer) findExistingObject(allRecipeAuthors, aRecipeAuthorId);
+
 
                 String newDescription = (String) findExistingObject(allDescriptions, aDescription);
-//                PositionType newPosition = (PositionType) findExistingObject(allPositionTypes, aPosition);
-//                CoreCompetency newSkill = (CoreCompetency) findExistingObject(allCoreCompetency, aSkill);
+                String newIngredientList = (String) findExistingObject(allIngredientLists, anIngredientList);
+                String newName = (String) findExistingObject(allNames, aName);
+                String newRecipeInstruction = (String) findExistingObject(allRecipeInstructions, aRecipeInstruction);
+                Integer newRecipeAuthorId = (Integer) findExistingObject(allRecipeAuthors, aRecipeAuthorId);
+                Integer newAverageRating = (Integer) findExistingObject(allAverageRatings, String.valueOf(anAverageRating));
 
-//                if (newRecipeAuthorId == null){
-//                    newRecipeAuthorId = new Integer(aRecipeAuthorId);
-//                    allRecipeAuthors.add(newRecipeAuthorId);
-//                }
+                if (newRecipeAuthorId == null){
+                    newRecipeAuthorId = Integer.valueOf(aRecipeAuthorId);
+                    allRecipeAuthors.add(newRecipeAuthorId);
+                }
 
-//                if (newLocation == null){
-//                    newLocation = new Location(aLocation);
-//                    allLocations.add(newLocation);
-//                }
-//
-//                if (newSkill == null){
-//                    newSkill = new CoreCompetency(aSkill);
-//                    allCoreCompetency.add(newSkill);
-//                }
-//
-//                if (newPosition == null){
-//                    newPosition = new PositionType(aPosition);
-//                    allPositionTypes.add(newPosition);
-//                }
+                if (newDescription == null){
+                    newDescription = aDescription;
+                    allDescriptions.add(newDescription);
+                }
+
+                if (newIngredientList == null){
+                    newIngredientList = anIngredientList;
+                    allIngredientLists.add(newIngredientList);
+                }
+
+                if (newName == null){
+                    newName = aName;
+                    allNames.add(newName);
+                }
+
+                if (newRecipeInstruction == null){
+                    newRecipeInstruction = aRecipeInstruction;
+                    allRecipeInstructions.add(newRecipeInstruction);
+                }
+
+                if (newAverageRating == null){
+                    newAverageRating = anAverageRating;
+                    allAverageRatings.add(newAverageRating);
+                }
 
                 Recipe newRecipe = new Recipe(aName, aDescription, anIngredientList, aRecipeInstruction);
 
