@@ -62,6 +62,18 @@ public class CookbookController {
         return "view-cookbook";
     }
 
+    //will render at "/cookbook/view" and will display list all of the logged in user's cookbooks
+    @GetMapping("/view")
+    public String displayAllCookbooks(HttpServletRequest request, Model model){
+        //get user in session
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("user");
+        System.out.println("we are in the displayAllCookbooks");
+        //add a list of cookbooks attached to the user to the model
+        model.addAttribute("cookbooks", cookbookRepository.findByUserId(userId));
+        return "view-cookbooks";
+    }
+
     @GetMapping("/view/{cookbookId}")
     public String displayViewCookbook(@PathVariable Integer cookbookId, Model model){
         model.addAttribute("cookbook", cookbookRepository.findById(cookbookId).get());

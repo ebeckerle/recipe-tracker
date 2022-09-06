@@ -20,9 +20,9 @@
 
 
 <div th:fragment="view-recipes">
-    <div th:each="recipe : ${recipes}">
+    <div th:each="recipe : ${recipes}"s style="border: 2px solid gray; padding: 10px; margin: 6px;">
         <a th:href="@{'/recipe/'+${recipe.id}}"><h3 th:text="${recipe.name}"></h3></a>
-        <h4 th:text="${recipe.description}"></h4>
+        <p th:text="${recipe.description}"></p>
     </div>
 </div>
 
