@@ -103,7 +103,10 @@ public class AuthenticationController {
         model.addAttribute(new LoginFormDTO());
         model.addAttribute("title", "Log In");
         model.addAttribute("recipes", recipeRepository.findAll());
+
+        //TODO : sort the recipes so that the highest rated is first
         //Collections.sort(recipes.getRating())
+
         return "login";
     }
 
@@ -114,7 +117,6 @@ public class AuthenticationController {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Log In");
-            System.out.println("we are in the if errors has errors");
             return "login";
         }
 
@@ -123,7 +125,6 @@ public class AuthenticationController {
         if (theUser == null) {
             errors.rejectValue("username", "user.invalid", "The given username does not exist");
             model.addAttribute("title", "Log In");
-            System.out.println("we are in the if user is null");
             return "login";
         }
 

@@ -9,7 +9,7 @@
     <div style="margin:40px; padding:10px; border: 2px solid #FFA500;">
         <h1 th:text="${recipe.name}"></h1>
         <h2 th:text="${recipe.description}"></h2>
-        <p>by </p><a th:text="${'by '+ recipeAuthor}" th:href="@{'/search/list-recipes/'+ ${recipe.recipeAuthor.getId()}}"></a>
+        <p>by <a th:text="${recipeAuthor}" th:href="@{'/search/list-recipes/'+ ${recipe.recipeAuthor.getId()}}"></a></p>
 
         <p style="color:dark-grey;">Ingredient List</p>
         <p style="white-space: pre-line" th:text="${recipe.ingredientList}"></p>
@@ -17,9 +17,10 @@
         <h6 style="color:dark-grey;">Preparation</h6>
         <p style="white-space: pre-line" th:text="${recipe.recipeInstruction}"></p>
 
-        <div>
-<!--            <form method="post" th:action="saveRecipe">-->
-                <form method="post">
+        <div th:if="${isUserLoggedIn and !userLoggedIn.equals(recipeAuthor)}">
+<!--            <div th:if="${isUserLoggedIn}">-->
+            <form method="post" th:action="saveRecipe">
+<!--                <form method="post">-->
                 <input type="hidden" name="recipesId" th:value="${recipe.id}">
                 <input type="submit" name="save" value="Save Recipe" class="btn btn-success">
             </form>
@@ -31,8 +32,8 @@
         <div>
             <div th:each="comment : ${comments}"><p th:text="${comment.commentBody}"></p></div>
         </div>
-        <form method="post">
-<!--            <form method="post" th:action="postComment">-->
+<!--        <form method="post">-->
+            <form method="post" th:action="postComment">
             <div class="form-group">
                 <label>Add a Comment:
                     <textarea th:field="${comment.commentBody}" class="form-control" rows="3" cols="50"></textarea>

@@ -22,7 +22,7 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
     AuthenticationController authenticationController;
 
 
-    private static final List<String> whitelist = Arrays.asList("/login", "/register", "/logout", "/css");
+    private static final List<String> whitelist = Arrays.asList("/login", "/register", "/logout", "/css", "/recipe/view");
 
     private static boolean isWhitelisted(String path) {
         for (String pathRoot : whitelist) {
@@ -41,6 +41,7 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
         // Don't require sign-in for whitelisted pages
         if (isWhitelisted(request.getRequestURI())) {
             // returning true indicates that the request may proceed
+            System.out.println("I am in the if isWhiteListed");
             return true;
         }
 
@@ -51,6 +52,7 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
         if (user != null) {
             return true;
         }
+
 
         // The user is NOT logged in
         response.sendRedirect("/login");

@@ -70,14 +70,28 @@ public class RecipeController {
         return "view-recipe";
     }
 
-    @GetMapping("/{recipeId}")
+    @GetMapping("/view/{recipeId}")
 //    @RequestMapping(value="/{recipeId}", method = RequestMethod.GET)
-    public String displayViewRecipe(Model model, @PathVariable Integer recipeId){
+    public String displayViewRecipe(Model model, @PathVariable Integer recipeId, HttpServletRequest request){
         Recipe recipe = recipeRepository.findById(recipeId).get();
         model.addAttribute("title", recipeRepository.findById(recipeId).get().getName());
         model.addAttribute("recipe", recipe);
         model.addAttribute("recipeAuthor", recipe.getRecipeAuthor().getUsername());
         model.addAttribute("comments", commentRepository.findByRecipeId(recipeId));
+
+        //for the Save Recipe form on the page - which we only want visible when a user is logged in and
+        // the user is not the recipe's author
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("user");
+        model.addAttribute("isUserLoggedIn", userRepository.findById(userId).isPresent());
+        if(userRepository.findById(userId).isPresent()){
+            model.addAttribute("userLoggedIn", userRepository.findById(userId).get().getUsername());
+        }else{
+            model.addAttribute("userLoggedIn", null);
+        }
+
+
+        //to populate the Add Comment Form on the page
         ArrayList<Integer> ratings = new ArrayList<>();
         ratings.add(1);
         ratings.add(2);
@@ -85,12 +99,24 @@ public class RecipeController {
         ratings.add(4);
         ratings.add(5);
         model.addAttribute("ratings", ratings);
-
         model.addAttribute(new Comment());
+
         return "view-recipe";
     }
 
-    @PostMapping("/{recipeId}")
+
+//    @GetMapping("/view/{recipeId}")
+//    public String displayViewRecipe(Model model, @PathVariable Integer recipeId){
+//        Recipe recipe = recipeRepository.findById(recipeId).get();
+//        model.addAttribute("title", recipeRepository.findById(recipeId).get().getName());
+//        model.addAttribute("recipe", recipe);
+//        model.addAttribute("recipeAuthor", recipe.getRecipeAuthor().getUsername());
+//        model.addAttribute("comments", commentRepository.findByRecipeId(recipeId));
+//
+//        return "view-recipe";
+//    }
+
+    @PostMapping("/view/{recipeId}")
 //    @RequestMapping(value="/{recipeId}", method = RequestMethod.POST, params = "action=postComment")
     public String processAddCommentForm(Comment newComment,
                                       HttpServletRequest request,
