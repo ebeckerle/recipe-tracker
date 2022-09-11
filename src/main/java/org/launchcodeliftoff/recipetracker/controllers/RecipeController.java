@@ -7,6 +7,7 @@ import org.launchcodeliftoff.recipetracker.data.UserRepository;
 import org.launchcodeliftoff.recipetracker.models.Comment;
 import org.launchcodeliftoff.recipetracker.models.Recipe;
 
+import org.launchcodeliftoff.recipetracker.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +19,10 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 
-@Controller
+
 //TODO: requestmapping will probably need to change before / after merged with main
+//TODO: DRY up the code in the methods for viewing recipe, posting comment, and saving recipe
+@Controller
 @RequestMapping("/recipe")
 public class RecipeController {
 
@@ -71,7 +74,6 @@ public class RecipeController {
     }
 
     @GetMapping("/view/{recipeId}")
-//    @RequestMapping(value="/{recipeId}", method = RequestMethod.GET)
     public String displayViewRecipe(Model model, @PathVariable Integer recipeId, HttpServletRequest request){
         Recipe recipe = recipeRepository.findById(recipeId).get();
         model.addAttribute("title", recipeRepository.findById(recipeId).get().getName());
@@ -89,7 +91,11 @@ public class RecipeController {
         }else{
             model.addAttribute("userLoggedIn", null);
         }
-
+        if(userRepository.findById(userId).get().getSavedRecipes().contains(recipe)){
+            model.addAttribute("userHasRecipeSaved", true);
+        }else{
+            model.addAttribute("userHasRecipeSaved", false);
+        }
 
         //to populate the Add Comment Form on the page
         ArrayList<Integer> ratings = new ArrayList<>();
@@ -105,23 +111,56 @@ public class RecipeController {
     }
 
 
-//    @GetMapping("/view/{recipeId}")
-//    public String displayViewRecipe(Model model, @PathVariable Integer recipeId){
-//        Recipe recipe = recipeRepository.findById(recipeId).get();
-//        model.addAttribute("title", recipeRepository.findById(recipeId).get().getName());
-//        model.addAttribute("recipe", recipe);
-//        model.addAttribute("recipeAuthor", recipe.getRecipeAuthor().getUsername());
-//        model.addAttribute("comments", commentRepository.findByRecipeId(recipeId));
-//
-//        return "view-recipe";
-//    }
 
-    @PostMapping("/view/{recipeId}")
-//    @RequestMapping(value="/{recipeId}", method = RequestMethod.POST, params = "action=postComment")
+
+    @PostMapping(value="/view/{recipeId}/saveRecipe")
+    public String processSaveRecipe(@RequestParam Integer recipesId, HttpServletRequest request,
+                                        Model model, @PathVariable Integer recipeId){
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("user");
+        User user = userRepository.findById(userId).get();
+        Recipe recipe = recipeRepository.findById(recipesId).get();
+        user.addToSavedRecipes(recipe);
+
+        userRepository.save(user);
+
+        model.addAttribute("title", recipeRepository.findById(recipeId).get().getName());
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("recipeAuthor", recipe.getRecipeAuthor().getUsername());
+        model.addAttribute("comments", commentRepository.findByRecipeId(recipeId));
+
+        //for the Save Recipe form on the page - which we only want visible when a user is logged in and
+        // the user is not the recipe's author
+        model.addAttribute("isUserLoggedIn", userRepository.findById(userId).isPresent());
+        if(userRepository.findById(userId).isPresent()){
+            model.addAttribute("userLoggedIn", userRepository.findById(userId).get().getUsername());
+        }else{
+            model.addAttribute("userLoggedIn", null);
+        }
+        if(userRepository.findById(userId).get().getSavedRecipes().contains(recipe)){
+            model.addAttribute("userHasRecipeSaved", true);
+        }else{
+            model.addAttribute("userHasRecipeSaved", false);
+        }
+
+        //to populate the Add Comment Form on the page
+        ArrayList<Integer> ratings = new ArrayList<>();
+        ratings.add(1);
+        ratings.add(2);
+        ratings.add(3);
+        ratings.add(4);
+        ratings.add(5);
+        model.addAttribute("ratings", ratings);
+        model.addAttribute(new Comment());
+
+        return "view-recipe";
+    }
+
+
+    @PostMapping(value="/view/{recipeId}/postComment")
     public String processAddCommentForm(Comment newComment,
-                                      HttpServletRequest request,
-                                        Model model, @PathVariable Integer recipeId
-                                        ){
+                                        HttpServletRequest request,
+                                        Model model, @PathVariable Integer recipeId){
         // finding logged in user by getting session
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("user");
@@ -139,6 +178,20 @@ public class RecipeController {
         recipe.calculateAverageRating();
         recipeRepository.save(recipe);
 
+        //for the Save Recipe form on the page - which we only want visible when a user is logged in and
+        // the user is not the recipe's author, we also want to know if the user already has the recipe saved
+        model.addAttribute("isUserLoggedIn", userRepository.findById(userId).isPresent());
+        if(userRepository.findById(userId).isPresent()){
+            model.addAttribute("userLoggedIn", userRepository.findById(userId).get().getUsername());
+        }else{
+            model.addAttribute("userLoggedIn", null);
+        }
+        if(userRepository.findById(userId).get().getSavedRecipes().contains(recipe)){
+            model.addAttribute("userHasRecipeSaved", true);
+        }else{
+            model.addAttribute("userHasRecipeSaved", false);
+        }
+
         model.addAttribute("title", recipeRepository.findById(recipeId).get().getName());
         model.addAttribute("recipe", recipe);
         model.addAttribute("recipeAuthor", recipe.getRecipeAuthor().getUsername());
@@ -154,23 +207,6 @@ public class RecipeController {
 
         return "view-recipe";
     }
-
-////    @RequestMapping(value="/saveRecipe", method = RequestMethod.POST, params = "action=saveRecipe")
-//    @PostMapping(value="/{recipeId}", params="saveRecipe")
-//    public String processSaveRecipe(@RequestParam Integer recipesId, HttpServletRequest request,
-//                                        Model model, @PathVariable Integer recipeId){
-//
-//        HttpSession session = request.getSession();
-//        Integer userId = (Integer) session.getAttribute("user");
-//        User user = userRepository.findById(userId).get();
-//        Recipe recipe = recipeRepository.findById(recipesId).get();
-//        user.addToSavedRecipes(recipe);
-//
-//        userRepository.save(user);
-//
-//        return "home";
-//    }
-
 
 
 }

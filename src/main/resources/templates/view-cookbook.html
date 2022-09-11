@@ -9,7 +9,7 @@
     <div style="margin:40px; padding:10px; border: 2px solid #FFA500;">
         <h1 th:text="${cookbook.name}"></h1>
         <ul th:each="recipe : ${cookbook.recipes}">
-            <li><a th:text="${recipe.getName()}" th:href="@{'/recipe/'+${recipe.getId()}}"></a></li>
+            <li><a th:text="${recipe.getName()}" th:href="@{'/recipe/view/'+${recipe.getId()}}"></a></li>
         </ul>
 
     </div>

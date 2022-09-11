@@ -9,7 +9,7 @@
 
 <div th:each="cookbook : ${cookbooks}">
 
-    <p th:text="${cookbook.name}"></p>
+    <p><a th:text="${cookbook.name}" th:href="@{'/cookbook/view/'+${cookbook.id}}"></a></p>
 
     <ul th:text="${cookbook.name}" th:each="recipe : ${cookbook.recipes}">
         <li th:text="${recipe.name}"></li>

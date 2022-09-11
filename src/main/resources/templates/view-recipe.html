@@ -17,13 +17,16 @@
         <h6 style="color:dark-grey;">Preparation</h6>
         <p style="white-space: pre-line" th:text="${recipe.recipeInstruction}"></p>
 
-        <div th:if="${isUserLoggedIn and !userLoggedIn.equals(recipeAuthor)}">
+        <div th:if="${isUserLoggedIn and !userLoggedIn.equals(recipeAuthor) and !userHasRecipeSaved}">
 <!--            <div th:if="${isUserLoggedIn}">-->
-            <form method="post" th:action="saveRecipe">
+            <form method="post" th:action="@{'/recipe/view/'+${recipe.id}+'/saveRecipe'}">
 <!--                <form method="post">-->
                 <input type="hidden" name="recipesId" th:value="${recipe.id}">
                 <input type="submit" name="save" value="Save Recipe" class="btn btn-success">
             </form>
+        </div>
+        <div th:if="${userHasRecipeSaved}">
+            <p style="color: green;">This recipe is saved!</p>
         </div>
     </div>
 
@@ -32,8 +35,7 @@
         <div>
             <div th:each="comment : ${comments}"><p th:text="${comment.commentBody}"></p></div>
         </div>
-<!--        <form method="post">-->
-            <form method="post" th:action="postComment">
+            <form method="post" th:action="@{'/recipe/view/'+${recipe.id}+'/postComment'}">
             <div class="form-group">
                 <label>Add a Comment:
                     <textarea th:field="${comment.commentBody}" class="form-control" rows="3" cols="50"></textarea>
@@ -61,7 +63,7 @@
             <div class="form-group">
                 <input type="submit" value="Add Comment" class="btn btn-success">
             </div>
-        </form>
+            </form>
     </div>
 </div>
 
